@@ -1,0 +1,32 @@
+
+{%extends 'layout/base.html'%}
+{%block title%}Chi tiết sản phẩm{%endblock%}
+{%block content%}
+<style>
+        .product-info {
+            /* Màu nền xanh nhạt */
+            background-color: #F0F8FF; /* AliceBlue */
+
+            /* Đường viền */
+            border: 1px solid #ADD8E6; /* LightBlue */
+
+            /* Các thuộc tính trang trí khác */
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+<div class="row mt-3">
+    <div class="col-md-5 col-12">
+     <img src="{{prod.image}}">
+        </div>
+    <div class= "col-md-7 col-12">
+        <div class="product-info mt-5">
+    <h3 class="text-info">{{prod.name}}</h3>
+        <h4 class="text-decs">{{prod.description}}</h4>
+            <h4 class="text-danger">Giá : {{ "{:,.0f}".format(prod.price) }} VND</h4>
+        </div>
+     <a href="#" class="btn btn-danger mt-3">Đặt hàng</a>
+</div>
+</div>
+{%endblock%}

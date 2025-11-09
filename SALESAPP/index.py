@@ -1,18 +1,40 @@
+import math
 from tkinter.font import names
 
-from flask import Flask, render_template
+from flask import Flask, render_template, request
+import flask_sqlalchemy
+from flask_sqlalchemy import SQLAlchemy
 
 import dao
+from SALESAPP import app
 
-app = Flask(__name__)
 
 @app.route("/")
-def index():
-    cates = dao.load_categories()
-    prods=dao.load_products()
-    return render_template("index.html",cates=cates,prods=prods)
 
-if __name__ =="__main__":
+def index():
+    q = request.args.get("q")
+    cate_id=request.args.get("cate_id")
+    page=request.args.get("page")
+    cates = dao.load_categories()
+    pages = math.ceil(dao.count_product() / app.config["PAGE_SIZE"])
+    prods = dao.load_products(q=q,cate_id=cate_id,page=page)
+    return render_template("index.html", prods=prods,pages=pages)
+
+
+@app.route("/products/<int:id>")
+def details(id):
+    return render_template("products_details.html", prod=dao.get_product_by_id(id))
+
+
+@app.context_processor
+def common_attribute():
+    return {
+        "cates": dao.load_categories()
+    }
+@app.route("/login")
+def login_my_user():
+    return render_template("login.html")
+
+if __name__ == "__main__":
     with app.app_context():
         app.run(debug=True)
-
