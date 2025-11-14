@@ -4,9 +4,10 @@ from tkinter.font import names
 from flask import Flask, render_template, request
 import flask_sqlalchemy
 from flask_sqlalchemy import SQLAlchemy
-
+from werkzeug.utils import redirect
+from flask_login import  login_user,current_user
 import dao
-from SALESAPP import app
+from SALESAPP import app,login
 
 
 @app.route("/")
@@ -31,9 +32,19 @@ def common_attribute():
     return {
         "cates": dao.load_categories()
     }
-@app.route("/login")
+@app.route("/login", methods=['get', 'post'])
+
 def login_my_user():
-    return render_template("login.html")
+    err_msg=None
+    if request.method.__eq__('POST'):
+     username = request.form.get("username")
+     password= request.form.get("password")
+     if username=="user" and password =="123":
+         return  redirect('/')
+     else:
+         err_msg="Tên đăng nhập hoặc mật khẩu không đúng"
+
+    return render_template("login.html",err_msg=err_msg)
 
 if __name__ == "__main__":
     with app.app_context():

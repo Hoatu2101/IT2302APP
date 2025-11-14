@@ -27,7 +27,6 @@ def load_products(q=None, cate_id=None, page=None):
             query = query.slice(start, start + size)
     return query.all()
 
-
 def get_product_by_id(id):
     # # """
     # #
